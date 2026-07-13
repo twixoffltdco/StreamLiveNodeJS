@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials/head') %>
+<body>
+<%- include('partials/nav') %>
+<%- include('partials/flash') %>
+<div class="container">
+  <div style="display:flex;align-items:center;margin-top:24px">
+    <h2 style="margin:0">Мои каналы</h2>
+    <a href="/channels/new" class="btn btn-primary btn-sm" style="margin-left:auto">+ Новый канал</a>
+  </div>
+
+  <% if (channels.length === 0) { %>
+    <div class="empty-state">У вас пока нет каналов. Создайте первый!</div>
+  <% } else { %>
+  <table class="admin-table" style="margin-top:16px">
+    <thead><tr><th>Название</th><th>Тип</th><th>Статус</th><th>Просмотры</th><th></th></tr></thead>
+    <tbody>
+      <% channels.forEach(c => { %>
+        <tr>
+          <td><%= c.title %></td>
+          <td><%= c.type === 'radio' ? 'Радио' : 'ТВ' %></td>
+          <td>
+            <span class="status-pill status-<%= c.status %>">
+              <%= c.status === 'pending' ? 'На модерации' : c.status === 'approved' ? 'Одобрен' : 'Отклонён' %>
+            </span>
+            <% if (c.status === 'rejected' && c.reject_reason) { %><div style="color:var(--text-dim);font-size:11px;margin-top:4px"><%= c.reject_reason %></div><% } %>
+          </td>
+          <td><%= c.views %></td>
+          <td><a class="btn btn-outline btn-sm" href="/channels/manage/<%= c.id %>">Управлять</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% } %>
+
+  <h3 style="margin-top:36px">Уведомления</h3>
+  <% if (notifications.length === 0) { %>
+    <p style="color:var(--text-dim);font-size:13px">Пока нет уведомлений.</p>
+  <% } else { %>
+    <% notifications.forEach(n => { %>
+      <div class="alert <%= n.type === 'channel_rejected' ? 'alert-error' : 'alert-success' %>"><%= n.message %></div>
+    <% }) %>
+  <% } %>
+</div>
+</body>
+</html>

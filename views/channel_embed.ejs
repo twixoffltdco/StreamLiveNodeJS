@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title><%= title %></title>
+<style>
+  html,body{margin:0;padding:0;background:#000;height:100%}
+  .player-wrap{width:100%;height:100vh;position:relative}
+  video,iframe{width:100%;height:100%;border:0}
+  .logo{position:absolute;bottom:10px;right:10px;width:32px;height:32px;border-radius:8px;opacity:.85}
+</style>
+</head>
+<body>
+<div class="player-wrap">
+  <% if (!activeSource) { %>
+    <div style="color:#888;display:flex;align-items:center;justify-content:center;height:100%;font-family:sans-serif">Эфир недоступен</div>
+  <% } else if (activeSource.type === 'mp4') { %>
+    <video controls autoplay playsinline src="<%= activeSource.url %>"></video>
+  <% } else if (activeSource.type === 'm3u8') { %>
+    <video id="hls-video" controls autoplay playsinline></video>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+    <script>
+      const video = document.getElementById('hls-video');
+      const src = <%- JSON.stringify(activeSource.url) %>;
+      if (Hls.isSupported()) { const hls = new Hls(); hls.loadSource(src); hls.attachMedia(video); }
+      else if (video.canPlayType('application/vnd.apple.mpegurl')) { video.src = src; }
+      video.play().catch(()=>{});
+    </script>
+  <% } else { %>
+    <iframe src="<%= activeSource.url %>" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  <% } %>
+  <% if (channel.logo_url) { %><img class="logo" src="<%= channel.logo_url %>" alt=""><% } %>
+</div>
+</body>
+</html>

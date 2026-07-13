@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('../partials/head') %>
+<body>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+<div class="admin-shell">
+  <div class="admin-sidebar">
+    <a href="/admin">Обзор</a>
+    <a href="/admin/moderation">Модерация</a>
+    <a href="/admin/channels">Все каналы</a>
+    <a href="/admin/sources">Источники</a>
+    <a href="/admin/oauth">Соц. авторизация</a>
+    <a href="/admin/users">Пользователи</a>
+    <a href="/admin/database" style="background:var(--primary);color:#fff;border-radius:4px;padding:8px 12px;margin-top:10px">⚙️ База данных</a>
+  </div>
+  <div class="admin-content">

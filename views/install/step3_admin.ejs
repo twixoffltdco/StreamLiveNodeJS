@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials_head') %>
+<body>
+<div class="install-wrap">
+  <div class="steps"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div></div>
+  <div class="form-card" style="margin:0">
+    <h2>Аккаунт администратора</h2>
+    <p style="color:var(--text-dim);font-size:13px">После сохранения будет автоматически создана база данных и этот аккаунт получит полные права администратора.</p>
+    <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+    <form method="POST" action="/install/admin">
+      <label>Email</label>
+      <input type="email" name="admin_email" required>
+      <label>Логин</label>
+      <input type="text" name="admin_username" value="admin" required>
+      <label>Пароль</label>
+      <input type="password" name="admin_password" required minlength="6">
+      <button class="btn btn-primary" style="width:100%;margin-top:20px" type="submit">Завершить установку</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

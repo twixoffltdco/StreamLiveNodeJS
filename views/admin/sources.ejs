@@ -1,0 +1,32 @@
+<%- include('layout_start') %>
+<h2>Стандартные источники</h2>
+<p style="color:var(--text-dim);font-size:13px">Эти источники доступны всем владельцам каналов, если они сами не хотят настраивать свои.</p>
+<form method="POST" action="/admin/sources" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:20px">
+  <div><label>Название</label><input type="text" name="name" required></div>
+  <div><label>Тип</label>
+    <select name="type">
+      <option value="mp4">MP4</option><option value="m3u8">M3U8</option>
+      <option value="youtube">YouTube</option><option value="vk">VK</option>
+      <option value="rutube">Rutube</option><option value="iframe">Iframe</option>
+    </select>
+  </div>
+  <div style="flex:1"><label>URL</label><input type="url" name="url" required></div>
+  <button class="btn btn-primary" type="submit">Добавить</button>
+</form>
+<table class="admin-table">
+  <thead><tr><th>Название</th><th>Тип</th><th>URL</th><th></th></tr></thead>
+  <tbody>
+    <% sources.forEach(s => { %>
+    <tr>
+      <td><%= s.name %></td><td><%= s.type %></td>
+      <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis"><%= s.url %></td>
+      <td>
+        <form method="POST" action="/admin/sources/<%= s.id %>/delete">
+          <button class="btn btn-outline btn-sm" type="submit">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+<%- include('layout_end') %>

@@ -1,0 +1,12 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> — <%= siteName %></title>
+  <meta name="description" content="<%= typeof seoDescription !== 'undefined' ? seoDescription : 'StreamLive — платформа для создания онлайн телеканалов и радио' %>">
+  <% if (typeof seoKeywords !== 'undefined' && seoKeywords) { %><meta name="keywords" content="<%= seoKeywords %>"><% } %>
+  <meta property="og:title" content="<%= title %>">
+  <meta property="og:description" content="<%= typeof seoDescription !== 'undefined' ? seoDescription : '' %>">
+  <meta property="og:type" content="video.other">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/css/style.css">
+</head>

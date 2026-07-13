@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials/head') %>
+<body>
+<%- include('partials/nav') %>
+<%- include('partials/flash') %>
+<div class="container">
+  <h2 style="margin-top:24px">Управление: <%= channel.title %>
+    <span class="status-pill status-<%= channel.status %>"><%= channel.status %></span>
+  </h2>
+  <p style="color:var(--text-dim);font-size:13px">
+    Публичная страница: <a href="/channels/<%= channel.slug %>" style="color:var(--accent-2)">/channels/<%= channel.slug %></a> ·
+    Embed-код: <code style="color:var(--accent-2)">&lt;iframe src="<%= process.env.SITE_URL %>/channels/<%= channel.slug %>/embed"&gt;&lt;/iframe&gt;</code>
+  </p>
+
+  <div class="form-card form-wide" style="margin:24px 0">
+    <h3>Основные настройки и SEO</h3>
+    <form method="POST" action="/channels/manage/<%= channel.id %>">
+      <label>Название</label>
+      <input type="text" name="title" value="<%= channel.title %>" required>
+      <label>Описание</label>
+      <textarea name="description"><%= channel.description || '' %></textarea>
+      <label>Логотип</label>
+      <input type="url" name="logo_url" value="<%= channel.logo_url || '' %>">
+      <label>Источник по умолчанию</label>
+      <select name="default_source_id">
+        <option value="">— нет —</option>
+        <% sources.forEach(s => { %>
+          <option value="<%= s.id %>" <%= channel.default_source_id === s.id ? 'selected' : '' %>><%= s.name %> (<%= s.type %>)</option>
+        <% }) %>
+      </select>
+      <label>SEO заголовок</label>
+      <input type="text" name="seo_title" value="<%= channel.seo_title || '' %>">
+      <label>SEO описание</label>
+      <textarea name="seo_description"><%= channel.seo_description || '' %></textarea>
+      <label>SEO ключевые слова</label>
+      <input type="text" name="seo_keywords" value="<%= channel.seo_keywords || '' %>" placeholder="тв онлайн, смотреть бесплатно, ...">
+      <button class="btn btn-primary" style="margin-top:20px" type="submit">Сохранить</button>
+    </form>
+  </div>
+
+  <div class="form-card form-wide" style="margin:24px 0">
+    <h3>Свои источники вещания</h3>
+    <p style="color:var(--text-dim);font-size:13px">Прямая ссылка на mp4/m3u8 или ссылка на YouTube/VK/Rutube для встраивания.</p>
+    <form method="POST" action="/channels/manage/<%= channel.id %>/sources" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+      <div><label>Название</label><input type="text" name="name" required></div>
+      <div><label>Тип</label>
+        <select name="type">
+          <option value="mp4">MP4</option>
+          <option value="m3u8">M3U8 (HLS)</option>
+          <option value="youtube">YouTube</option>
+          <option value="vk">VK Видео</option>
+          <option value="rutube">Rutube</option>
+          <option value="iframe">Другое (iframe)</option>
+        </select>
+      </div>
+      <div style="flex:1"><label>URL</label><input type="url" name="url" required></div>
+      <button class="btn btn-primary" type="submit">Добавить</button>
+    </form>
+    <table class="admin-table" style="margin-top:16px">
+      <thead><tr><th>Название</th><th>Тип</th><th>URL</th></tr></thead>
+      <tbody>
+        <% sources.forEach(s => { %><tr><td><%= s.name %></td><td><%= s.type %></td><td style="max-width:300px;overflow:hidden;text-overflow:ellipsis"><%= s.url %></td></tr><% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-card form-wide" style="margin:24px 0">
+    <h3>Расписание эфира (пн–вс)</h3>
+    <form method="POST" action="/channels/manage/<%= channel.id %>/schedule" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+      <div><label>День</label>
+        <select name="day_of_week">
+          <option value="0">Пн</option><option value="1">Вт</option><option value="2">Ср</option>
+          <option value="3">Чт</option><option value="4">Пт</option><option value="5">Сб</option><option value="6">Вс</option>
+        </select>
+      </div>
+      <div><label>С</label><input type="time" name="start_time" required></div>
+      <div><label>До</label><input type="time" name="end_time" required></div>
+      <div><label>Источник</label>
+        <select name="source_id" required>
+          <% sources.forEach(s => { %><option value="<%= s.id %>"><%= s.name %></option><% }) %>
+        </select>
+      </div>
+      <div><label>Название программы</label><input type="text" name="program_title"></div>
+      <button class="btn btn-primary" type="submit">Добавить в расписание</button>
+    </form>
+    <table class="schedule-table">
+      <thead><tr><th>День</th><th>Время</th><th>Программа</th><th></th></tr></thead>
+      <tbody>
+        <% const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс']; schedule.forEach(s => { %>
+        <tr>
+          <td><%= days[s.day_of_week] %></td>
+          <td><%= s.start_time %>–<%= s.end_time %></td>
+          <td><%= s.program_title || '—' %></td>
+          <td>
+            <form method="POST" action="/channels/manage/<%= channel.id %>/schedule/<%= s.id %>/delete">
+              <button class="btn btn-danger btn-sm" type="submit">Удалить</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-card form-wide" style="margin:24px 0">
+    <h3>Свои стикеры чата</h3>
+    <form method="POST" action="/channels/manage/<%= channel.id %>/stickers" style="display:flex;gap:10px;align-items:end">
+      <div><label>Код</label><input type="text" name="code" placeholder=":myHype:" required></div>
+      <div style="flex:1"><label>Ссылка на изображение</label><input type="url" name="image_url" required></div>
+      <button class="btn btn-primary" type="submit">Добавить</button>
+    </form>
+    <div class="sticker-row" style="margin-top:14px">
+      <% stickers.forEach(s => { %><img src="<%= s.image_url %>" title="<%= s.code %>"><% }) %>
+    </div>
+  </div>
+
+  <div class="form-card form-wide" style="margin:24px 0">
+    <h3>Модераторы чата</h3>
+    <form method="POST" action="/channels/manage/<%= channel.id %>/moderators" style="display:flex;gap:10px;align-items:end">
+      <div style="flex:1"><label>Логин пользователя</label><input type="text" name="username" required></div>
+      <button class="btn btn-primary" type="submit">Назначить</button>
+    </form>
+    <ul>
+      <% mods.forEach(m => { %><li><%= m.username %></li><% }) %>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

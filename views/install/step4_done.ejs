@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials_head') %>
+<body>
+<div class="install-wrap">
+  <div class="form-card" style="margin:0;text-align:center">
+    <h2 style="color:var(--ok)">✓ Установка завершена</h2>
+    <p style="color:var(--text-dim);font-size:14px">
+      База данных создана, таблицы залиты, администратор создан.<br>
+      Осталось перезапустить сервер, чтобы применились настройки из .env:
+    </p>
+    <pre style="background:var(--bg-elevated);padding:14px;border-radius:10px;text-align:left;font-size:13px;overflow-x:auto">npm start</pre>
+    <p style="color:var(--text-dim);font-size:13px">После перезапуска откройте <code><%= siteUrl %></code> и войдите под созданным аккаунтом.</p>
+  </div>
+</div>
+</body>
+</html>

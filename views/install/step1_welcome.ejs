@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials_head') %>
+<body>
+<div class="install-wrap">
+  <div class="steps"><div class="step-dot done"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+  <div class="form-card" style="margin:0">
+    <h2 class="brand" style="font-size:26px">StreamLive — установка</h2>
+    <p style="color:var(--text-dim);font-size:14px">Мастер установки настроит базу данных, создаст таблицы и вашего администратора. Это займёт меньше минуты.</p>
+    <ul style="color:var(--text-dim);font-size:13px;line-height:1.8">
+      <li>Node.js установлен и зависимости выполнены (<code>npm install</code>)</li>
+      <li>MySQL сервер доступен (данные для подключения понадобятся на следующем шаге)</li>
+    </ul>
+    <a href="/install/database" class="btn btn-primary" style="width:100%;text-align:center;margin-top:16px">Начать установку</a>
+  </div>
+</div>
+</body>
+</html>

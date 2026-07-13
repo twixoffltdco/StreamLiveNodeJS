@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials_head') %>
+<body>
+<div class="install-wrap">
+  <div class="steps"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot"></div></div>
+  <div class="form-card" style="margin:0">
+    <h2>Проект и база данных</h2>
+    <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+    <form method="POST" action="/install/database">
+      <label>Название проекта</label>
+      <input type="text" name="site_name" value="<%= values.site_name || 'StreamLive' %>" required>
+      <label>Ссылка на сайт (URL)</label>
+      <input type="url" name="site_url" value="<%= values.site_url || 'http://localhost:3000' %>" required>
+
+      <hr style="border-color:var(--border);margin:20px 0">
+
+      <label>Хост MySQL</label>
+      <input type="text" name="db_host" value="<%= values.db_host || 'localhost' %>" required>
+      <label>Порт</label>
+      <input type="text" name="db_port" value="<%= values.db_port || '3306' %>">
+      <label>Имя базы данных</label>
+      <input type="text" name="db_name" value="<%= values.db_name || 'streamlive' %>" required>
+      <label>Пользователь MySQL</label>
+      <input type="text" name="db_user" value="<%= values.db_user || '' %>" required>
+      <label>Пароль MySQL</label>
+      <input type="password" name="db_password" value="<%= values.db_password || '' %>">
+
+      <button class="btn btn-primary" style="width:100%;margin-top:20px" type="submit">Проверить подключение и продолжить</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

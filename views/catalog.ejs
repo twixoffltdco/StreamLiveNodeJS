@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials/head') %>
+<body>
+<%- include('partials/nav') %>
+<%- include('partials/flash') %>
+<div class="container">
+  <div class="type-tabs">
+    <a href="/channels" class="<%= !activeType ? 'active' : '' %>">Все</a>
+    <a href="/channels?type=tv" class="<%= activeType === 'tv' ? 'active' : '' %>">Телеканалы</a>
+    <a href="/channels?type=radio" class="<%= activeType === 'radio' ? 'active' : '' %>">Радио</a>
+    <% if (currentUser) { %><a href="/channels/new" class="btn btn-primary btn-sm" style="margin-left:auto">+ Создать канал</a><% } %>
+  </div>
+
+  <% if (channels.length === 0) { %>
+    <div class="empty-state">Пока тут пусто. Будь первым, кто запустит канал.</div>
+  <% } else { %>
+  <div class="grid">
+    <% channels.forEach(c => { %>
+      <a class="card" href="/channels/<%= c.slug %>">
+        <div class="card-thumb">
+          <span class="badge-live"><%= c.type === 'radio' ? 'РАДИО' : 'LIVE' %></span>
+          <% if (c.logo_url) { %><img src="<%= c.logo_url %>" alt="<%= c.title %>"><% } %>
+        </div>
+        <div class="card-body">
+          <p class="card-title"><%= c.title %></p>
+          <p class="card-meta"><%= c.views %> просмотров</p>
+        </div>
+      </a>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
+</body>
+</html>

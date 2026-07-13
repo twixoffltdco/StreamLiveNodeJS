@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('../partials/head') %>
+<body>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+<div class="container">
+  <div class="form-card">
+    <h2>Регистрация</h2>
+    <form method="POST" action="/auth/register">
+      <label>Email</label>
+      <input type="email" name="email" required>
+      <label>Логин</label>
+      <input type="text" name="username" required minlength="3" maxlength="30">
+      <label>Пароль</label>
+      <input type="password" name="password" required minlength="6">
+      <button class="btn btn-primary" style="margin-top:20px;width:100%" type="submit">Создать аккаунт</button>
+    </form>
+    <% if (providers.length) { %>
+      <div class="oauth-row">
+        <% providers.forEach(p => { %>
+          <a class="oauth-btn" href="/auth/<%= p.name %>">
+            <% if (p.icon_url) { %><img src="<%= p.icon_url %>" alt=""><% } %>
+            <%= p.display_name %>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+    <p style="margin-top:18px;font-size:13px;color:var(--text-dim)">Уже есть аккаунт? <a href="/auth/login" style="color:var(--accent-2)">Войти</a></p>
+  </div>
+</div>
+</body>
+</html>

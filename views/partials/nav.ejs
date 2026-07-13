@@ -1,0 +1,17 @@
+<nav class="navbar">
+  <a href="/" class="brand">StreamLive</a>
+  <div class="nav-links">
+    <a href="/channels">Каталог</a>
+    <a href="/shorts" style="color:var(--primary);font-weight:bold">Shorts</a>
+    <% if (currentUser) { %>
+      <a href="/dashboard">Мои каналы</a>
+      <% if (currentUser.role === 'admin') { %><a href="/admin">Админка</a><% } %>
+      <form action="/auth/logout" method="POST" style="display:inline">
+        <button class="btn btn-outline btn-sm" type="submit">Выйти</button>
+      </form>
+    <% } else { %>
+      <a href="/auth/login">Войти</a>
+      <a href="/auth/register" class="btn btn-primary btn-sm">Регистрация</a>
+    <% } %>
+  </div>
+</nav>

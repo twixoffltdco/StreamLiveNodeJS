@@ -1,0 +1,11 @@
+<%- include('layout_start') %>
+<h2>Обзор</h2>
+<div class="stat-grid">
+  <div class="stat-card"><div class="num"><%= pending %></div><div class="lbl">Ожидают модерации</div></div>
+  <div class="stat-card"><div class="num"><%= total %></div><div class="lbl">Всего каналов</div></div>
+  <div class="stat-card"><div class="num"><%= users %></div><div class="lbl">Пользователей</div></div>
+</div>
+<% if (pending > 0) { %>
+  <a href="/admin/moderation" class="btn btn-primary">Перейти к модерации (<%= pending %>)</a>
+<% } %>
+<%- include('layout_end') %>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<%- include('partials/head') %>
+<body>
+<%- include('partials/nav') %>
+<%- include('partials/flash') %>
+<div class="container">
+  <div class="form-card form-wide">
+    <h2>Создать канал или радио</h2>
+    <p style="color:var(--text-dim);font-size:13px">После создания канал попадёт на модерацию. Как только администратор одобрит — он появится в каталоге.</p>
+    <form method="POST" action="/channels/new">
+      <label>Тип</label>
+      <select name="type">
+        <option value="tv">Телеканал</option>
+        <option value="radio">Радио</option>
+      </select>
+      <label>Название</label>
+      <input type="text" name="title" required>
+      <label>Описание</label>
+      <textarea name="description"></textarea>
+      <label>Логотип (прямая ссылка на изображение)</label>
+      <input type="url" name="logo_url" placeholder="https://...">
+      <label>Источник вещания по умолчанию</label>
+      <select name="default_source_id">
+        <option value="">— выбрать позже в настройках —</option>
+        <% sources.forEach(s => { %>
+          <option value="<%= s.id %>"><%= s.name %> (<%= s.type %>)</option>
+        <% }) %>
+      </select>
+      <button class="btn btn-primary" style="margin-top:20px;width:100%" type="submit">Отправить на модерацию</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

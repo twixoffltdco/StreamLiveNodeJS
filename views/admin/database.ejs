@@ -1,0 +1,56 @@
+<%- include('layout_start') %>
+<h2>Обслуживание базы данных</h2>
+
+<% if (success) { %>
+  <div class="alert alert-success" style="margin-bottom:20px"><%= success %></div>
+<% } %>
+
+<% if (error) { %>
+  <div class="alert alert-error" style="margin-bottom:20px"><%= error %></div>
+<% } %>
+
+<div style="background:#f5f5f5;padding:20px;border-radius:8px;margin-bottom:20px">
+  <h3>Обновить кодировку базы данных</h3>
+  <p style="color:#666;margin-bottom:15px">
+    Эта операция обновит кодировку всех таблиц на <strong>utf8mb4</strong> для корректного отображения русского текста и эмодзи.
+    <br><strong>Важно:</strong> все ваши данные останутся на месте, ничего не удалится.
+  </p>
+  
+  <form method="POST" action="/admin/database/update-charset" style="display:inline">
+    <button type="submit" class="btn btn-primary" onclick="return confirm('Вы уверены? Это может занять некоторое время.')">
+      🔄 Обновить базу данных
+    </button>
+  </form>
+</div>
+
+<div style="background:#f9f9f9;padding:20px;border-radius:8px;border-left:4px solid #0066cc">
+  <h3>Информация о базе данных</h3>
+  <% if (!error) { %>
+    <table style="width:100%;border-collapse:collapse">
+      <tr style="border-bottom:1px solid #ddd">
+        <td style="padding:10px"><strong>Кодировка базы:</strong></td>
+        <td style="padding:10px"><%= dbInfo.DEFAULT_CHARACTER_SET_NAME %> (<%= dbInfo.DEFAULT_COLLATION_NAME %>)</td>
+      </tr>
+      <tr style="border-bottom:1px solid #ddd">
+        <td style="padding:10px"><strong>Таблиц:</strong></td>
+        <td style="padding:10px"><%= tableCount %></td>
+      </tr>
+      <tr style="border-bottom:1px solid #ddd">
+        <td style="padding:10px"><strong>Пользователей:</strong></td>
+        <td style="padding:10px"><%= users %></td>
+      </tr>
+      <tr style="border-bottom:1px solid #ddd">
+        <td style="padding:10px"><strong>Каналов:</strong></td>
+        <td style="padding:10px"><%= channels %></td>
+      </tr>
+      <tr>
+        <td style="padding:10px"><strong>Сообщений в чате:</strong></td>
+        <td style="padding:10px"><%= messages %></td>
+      </tr>
+    </table>
+  <% } else { %>
+    <p style="color:#c33">Ошибка при получении информации: <%= error %></p>
+  <% } %>
+</div>
+
+<%- include('layout_end') %>

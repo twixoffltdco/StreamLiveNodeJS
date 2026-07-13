@@ -1,0 +1,27 @@
+<%- include('layout_start') %>
+<h2>Все каналы</h2>
+<table class="admin-table">
+  <thead><tr><th>Название</th><th>Автор</th><th>Статус</th><th>Просмотры</th><th></th></tr></thead>
+  <tbody>
+    <% channels.forEach(c => { %>
+    <tr>
+      <td><a href="/channels/<%= c.slug %>" style="color:var(--accent-2)"><%= c.title %></a></td>
+      <td><%= c.owner_name %></td>
+      <td><span class="status-pill status-<%= c.status %>"><%= c.status %></span></td>
+      <td><%= c.views %></td>
+      <td style="display:flex;gap:6px">
+        <% if (c.status === 'approved') { %>
+        <form method="POST" action="/admin/channels/<%= c.id %>/takedown">
+          <input type="hidden" name="reason" value="Нарушение правил платформы">
+          <button class="btn btn-danger btn-sm" type="submit">Снять с публикации</button>
+        </form>
+        <% } %>
+        <form method="POST" action="/admin/channels/<%= c.id %>/delete" onsubmit="return confirm('Удалить канал навсегда?')">
+          <button class="btn btn-outline btn-sm" type="submit">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+<%- include('layout_end') %>

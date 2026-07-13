@@ -1,0 +1,22 @@
+<%- include('layout_start') %>
+<h2>Модерация каналов</h2>
+<% if (channels.length === 0) { %>
+  <div class="empty-state">Очередь пуста ✨</div>
+<% } %>
+<% channels.forEach(c => { %>
+  <div class="card" style="padding:18px;margin-bottom:14px;display:flex;gap:16px;align-items:center">
+    <% if (c.logo_url) { %><img src="<%= c.logo_url %>" style="width:56px;height:56px;border-radius:12px;object-fit:cover"><% } %>
+    <div style="flex:1">
+      <b><%= c.title %></b> <span style="color:var(--text-dim)">(<%= c.type === 'radio' ? 'Радио' : 'ТВ' %>) — автор: <%= c.owner_name %></span>
+      <p style="color:var(--text-dim);font-size:13px;margin:6px 0"><%= c.description || 'Без описания' %></p>
+    </div>
+    <form method="POST" action="/admin/moderation/<%= c.id %>/approve">
+      <button class="btn btn-ok btn-sm" type="submit">Одобрить</button>
+    </form>
+    <form method="POST" action="/admin/moderation/<%= c.id %>/reject" style="display:flex;gap:6px">
+      <input type="text" name="reason" placeholder="Причина отказа" style="width:180px">
+      <button class="btn btn-danger btn-sm" type="submit">Отклонить</button>
+    </form>
+  </div>
+<% }) %>
+<%- include('layout_end') %>

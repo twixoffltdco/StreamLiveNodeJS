@@ -1,0 +1,31 @@
+<%- include('layout_start') %>
+<h2>Пользователи</h2>
+<table class="admin-table">
+  <thead><tr><th>Логин</th><th>Email</th><th>Роль</th><th>Статус</th><th></th></tr></thead>
+  <tbody>
+    <% users.forEach(u => { %>
+    <tr>
+      <td><%= u.username %></td>
+      <td><%= u.email || '—' %></td>
+      <td>
+        <form method="POST" action="/admin/users/<%= u.id %>/role" style="display:flex;gap:6px">
+          <select name="role" onchange="this.form.submit()">
+            <option value="user" <%= u.role==='user'?'selected':'' %>>user</option>
+            <option value="moderator" <%= u.role==='moderator'?'selected':'' %>>moderator</option>
+            <option value="admin" <%= u.role==='admin'?'selected':'' %>>admin</option>
+          </select>
+        </form>
+      </td>
+      <td><%- u.is_banned ? '<span class="status-pill status-rejected">забанен</span>' : '<span class="status-pill status-approved">активен</span>' %></td>
+      <td>
+        <% if (u.is_banned) { %>
+          <form method="POST" action="/admin/users/<%= u.id %>/unban"><button class="btn btn-ok btn-sm" type="submit">Разбанить</button></form>
+        <% } else { %>
+          <form method="POST" action="/admin/users/<%= u.id %>/ban"><button class="btn btn-danger btn-sm" type="submit">Забанить</button></form>
+        <% } %>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+<%- include('layout_end') %>

@@ -1,0 +1,53 @@
+<%- include('layout_start') %>
+<h2>Соц. авторизация</h2>
+<p style="color:var(--text-dim);font-size:13px">Впишите client_id/client_secret из кабинета разработчика соцсети (VK/Google/Яндекс/др.). Включите провайдер — кнопка появится на странице входа сразу, без рестарта сервера.</p>
+
+<% providers.forEach(p => { %>
+<div class="form-card form-wide" style="margin:18px 0">
+  <form method="POST" action="/admin/oauth/<%= p.id %>">
+    <h3 style="margin-top:0"><%= p.display_name %> <span class="status-pill <%= p.enabled ? 'status-approved' : 'status-pending' %>"><%= p.enabled ? 'включён' : 'выключен' %></span></h3>
+    <label>Отображаемое имя</label>
+    <input type="text" name="display_name" value="<%= p.display_name %>">
+    <label>Иконка (URL)</label>
+    <input type="url" name="icon_url" value="<%= p.icon_url || '' %>">
+    <label>Client ID</label>
+    <input type="text" name="client_id" value="<%= p.client_id || '' %>">
+    <label>Client Secret</label>
+    <input type="text" name="client_secret" value="<%= p.client_secret || '' %>">
+    <label>Auth URL</label>
+    <input type="url" name="auth_url" value="<%= p.auth_url %>">
+    <label>Token URL</label>
+    <input type="url" name="token_url" value="<%= p.token_url %>">
+    <label>Profile URL</label>
+    <input type="url" name="profile_url" value="<%= p.profile_url %>">
+    <label>Scope</label>
+    <input type="text" name="scope" value="<%= p.scope %>">
+    <label style="display:flex;align-items:center;gap:8px;margin-top:14px">
+      <input type="checkbox" name="enabled" value="1" style="width:auto" <%= p.enabled ? 'checked' : '' %>> Включить провайдер
+    </label>
+    <button class="btn btn-primary" style="margin-top:16px" type="submit">Сохранить</button>
+  </form>
+</div>
+<% }) %>
+
+<div class="form-card form-wide">
+  <h3 style="margin-top:0">Добавить свой OAuth2-провайдер</h3>
+  <form method="POST" action="/admin/oauth">
+    <label>Системное имя (латиницей, напр. discord)</label>
+    <input type="text" name="name" required>
+    <label>Отображаемое имя</label>
+    <input type="text" name="display_name" required>
+    <label>Иконка (URL)</label>
+    <input type="url" name="icon_url">
+    <label>Auth URL</label>
+    <input type="url" name="auth_url" required>
+    <label>Token URL</label>
+    <input type="url" name="token_url" required>
+    <label>Profile URL</label>
+    <input type="url" name="profile_url" required>
+    <label>Scope</label>
+    <input type="text" name="scope">
+    <button class="btn btn-primary" style="margin-top:16px" type="submit">Добавить провайдер</button>
+  </form>
+</div>
+<%- include('layout_end') %>
